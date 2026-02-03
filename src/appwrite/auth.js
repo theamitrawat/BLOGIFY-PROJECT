@@ -21,35 +21,37 @@ export class AuthService {
                 return userAccount;
             }
         } catch (error) {
+            console.error("AuthService → createAccount error:", error);
             throw error;
         }
     }
 
     async login({ email, password }) {
         try {
-            return await this.account.createEmailPasswordSession(email, password)
+            return await this.account.createEmailPasswordSession(email, password);
         } catch (error) {
+            console.error("Login failed:", error.message);
             throw error;
         }
     }
 
     async getCurrentUser() {
         try {
-            return await this.account.get()
+            return await this.account.get();
         } catch (error) {
-            throw error;
+            return null;
         }
-
-        return null;
     }
 
     async logout() {
         try {
-            await this.account.deleteSessions();
+            await this.account.deleteSession("current");
         } catch (error) {
+            console.error("Logout failed:", error.message);
             throw error;
         }
     }
+
 }
 
 const authService = new AuthService();
